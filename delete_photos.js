@@ -1,3 +1,29 @@
+// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        photos.google.com/
+// @grant        none
+// @require http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js
+
+// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @grant    GM_addStyle
+// ==/UserScript==
+/*- The @grant directive is needed to work around a major design
+    change introduced in GM 1.0.
+    It restores the sandbox.
+*/
+// ==/UserScript==
+waitForKeyElements ("div.RY3tic", actionFunction);
+
+function actionFunction (jNode) {
+
+
+ this.$ = this.jQuery = jQuery.noConflict(true);
+
 // Selector for Images and buttons
 const ELEMENT_SELECTORS = {
     checkboxClass: '.ckGgle',
@@ -32,8 +58,27 @@ let deleteTask = setInterval(() => {
 
     imageCount += checkboxes.length;
 
-    checkboxes.forEach((checkbox) => { checkbox.click() });
-    console.log("[INFO] Deleting", checkboxes.length, "images");
+    checkboxes.forEach((checkbox) => {
+		checkbox.click();
+//		var checked = checkbox.checked
+//		if(
+//			not(checked)
+//		)
+//		{setTimeout(function(){
+//			checkbox.click();
+//		}, 500);
+
+		//}
+	});
+
+
+
+waitForKeyElements ("input:nth-child(" + imageCount +")", countChecked);
+
+	var countChecked = function() {
+
+
+    console.log("[INFO] Deleting", $( "input:checked" ).length, "images");
 
     setTimeout(() => {
 
@@ -45,4 +90,6 @@ let deleteTask = setInterval(() => {
             buttons.confirmation_button.click();
         }, TIME_CONFIG['press_button_delay']);
     }, TIME_CONFIG['press_button_delay']);
-}, TIME_CONFIG['delete_cycle']);
+		};
+}, TIME_CONFIG['delete_cycle']);};
+
